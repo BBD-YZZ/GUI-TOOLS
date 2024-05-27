@@ -87,7 +87,7 @@ class MY_GUI:
            
 
     def set_window(self):
-        self.init_window.title("漏洞利用工具v1.0   Auth: XSY-BBD")
+        self.init_window.title("漏洞利用工具v1.0   Auth: XSY-BBD , git: https://github.com/BBD-YZZ/GUI-TOOLS")
 
         screen_width = self.init_window.winfo_screenwidth()
         screen_height = self.init_window.winfo_screenheight()
@@ -335,7 +335,11 @@ class MY_GUI:
         self.update_user_nacos.grid(row=1,column=5,padx=5,pady=3,ipadx=5)
         self.get_info_button = tk.Button(self.page5_top_frame, text="查看配置",fg='blue', font=('Arial', 10), command=self.get_nacos_config)
         self.get_info_button.grid(row=1,column=6,padx=5,pady=3,ipadx=5)
-
+        
+        self.nacos_admin_button = tk.Button(self.page5_top_frame, text="加用户组",fg='blue', font=('Arial', 10), command=self.nacos_admin_group)
+        self.nacos_admin_button.grid(row=2,column=4,padx=5,pady=3,ipadx=5)
+        self.nacos_database_button = tk.Button(self.page5_top_frame, text="数据库信息",fg='blue', font=('Arial', 10), command=self.nacos_database_config)
+        self.nacos_database_button.grid(row=2,column=5,padx=5,pady=3,ipadx=5)
 
         self.add_user_nacostext = tk.Text(self.page5, wrap="word", state='disabled', height=30)
         self.add_user_nacostext.pack(side=tk.LEFT, fill="both", expand=True)
@@ -475,6 +479,50 @@ class MY_GUI:
    
         else :
             result = "[!] 目前只支持Nacos默认秘钥修改密码，其它不支持，请选择nacos_jwt!"
+            self.add_user_nacostext.config(state='normal')
+            self.add_user_nacostext.insert('end',"===============================================================================================\r\n")
+            self.add_user_nacostext.insert('end', result+'\n')
+            self.add_user_nacostext.insert('end',"===============================================================================================\r\n")
+            self.add_user_nacostext.config(state='disabled')
+
+    def nacos_admin_group(self):
+        proxy = self.get_proxy()
+        target = self.target_entry.get().strip()
+        username = self.page5_username_entry.get()
+        select_radio = self.radio_nacos_var.get()
+        exp = nacos.nacos(target, proxy)
+        if select_radio == "nacos_jwt":            
+            result = exp.nacos_admin_group(username)
+            self.add_user_nacostext.config(state='normal')
+            self.add_user_nacostext.insert('end',"===============================================================================================\r\n")
+            self.add_user_nacostext.insert('end', result+'\n')
+            self.add_user_nacostext.insert('end',"===============================================================================================\r\n")
+            self.add_user_nacostext.config(state='disabled')
+   
+        else :
+            result = "[!] 目前只支持Nacos默认秘钥添加用户组，其它不支持，请选择nacos_jwt!"
+            self.add_user_nacostext.config(state='normal')
+            self.add_user_nacostext.insert('end',"===============================================================================================\r\n")
+            self.add_user_nacostext.insert('end', result+'\n')
+            self.add_user_nacostext.insert('end',"===============================================================================================\r\n")
+            self.add_user_nacostext.config(state='disabled')
+
+    def nacos_database_config(self):
+        proxy = self.get_proxy()
+        target = self.target_entry.get().strip()
+        username = self.page5_username_entry.get()
+        select_radio = self.radio_nacos_var.get()
+        exp = nacos.nacos(target, proxy)
+        if select_radio == "nacos_jwt":            
+            result = exp.nacos_database_config()
+            self.add_user_nacostext.config(state='normal')
+            self.add_user_nacostext.insert('end',"===============================================================================================\r\n")
+            self.add_user_nacostext.insert('end', result+'\n')
+            self.add_user_nacostext.insert('end',"===============================================================================================\r\n")
+            self.add_user_nacostext.config(state='disabled')
+   
+        else :
+            result = "[!] 目前只支持Nacos默认秘钥越权查看数据库配置信息，其它不支持，请选择nacos_jwt!"
             self.add_user_nacostext.config(state='normal')
             self.add_user_nacostext.insert('end',"===============================================================================================\r\n")
             self.add_user_nacostext.insert('end', result+'\n')
@@ -1050,7 +1098,7 @@ class MY_GUI:
 
 def gui_main():
     init_window = tk.Tk()   
-    gui = MY_GUI(init_window, 700, 650)
+    gui = MY_GUI(init_window, 700, 750)
     gui.set_window()
     init_window.mainloop()
     
