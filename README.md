@@ -15,6 +15,9 @@
 ![nacos2](https://github.com/BBD-YZZ/GUI-TOOLS/blob/master/img/nacos.png)
 ![nacos3](https://github.com/BBD-YZZ/GUI-TOOLS/blob/master/img/nacos3.png)
 
+*新增*
+![nacos4](https://github.com/BBD-YZZ/GUI-TOOLS/blob/master/img/nacos4.PNG)
+
 #### proxy
 *支持http和socks5代理*
 
