@@ -15,7 +15,7 @@
 ![nacos2](https://github.com/BBD-YZZ/GUI-TOOLS/blob/master/img/nacos.png)
 ![nacos3](https://github.com/BBD-YZZ/GUI-TOOLS/blob/master/img/nacos3.png)
 
-*新增*
+*新增添加用户组，越权查看数据库配置信息*
 ![nacos4](https://github.com/BBD-YZZ/GUI-TOOLS/blob/master/img/nacos4.PNG)
 
 #### proxy
